@@ -30,6 +30,8 @@ class ListAllLikes(APIView):
 
     def get(self, request, format=None):
 
+        print(request.path_info)
+
         all_likes = models.Like.objects.all()
 
         serializer = serializers.LikeSerializer(all_likes, many=True)
