@@ -28,6 +28,9 @@ class Image(TimeStampedModel):
     def __str__(self):
         return '지역:{} -설명:{}'.format(self.location, self.caption)
 
+    class Meta:
+        ordering = ['-created_at']
+
 
 @python_2_unicode_compatible
 class Comment(TimeStampedModel):

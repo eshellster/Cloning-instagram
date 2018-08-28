@@ -5,18 +5,8 @@ app_name = "images"
 
 urlpatterns = [
     path(
-        "all/",
-        view=views.ListAllImages.as_view(),
-        name='all_images'
-    ),
-    path(
-        "comments/",
-        view=views.ListAllComments.as_view(),
-        name='all_Comments'
-    ),
-    path(
-        "likes/",
-        view=views.ListAllLikes.as_view(),
-        name='all_Likes'
+        "",
+        view=views.Feed.as_view(),
+        name='feed'
     ),
 ]
