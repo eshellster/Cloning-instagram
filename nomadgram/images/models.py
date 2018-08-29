@@ -25,6 +25,10 @@ class Image(TimeStampedModel):
     caption = models.TextField()
     creator = models.ForeignKey(user_models.User, models.SET_NULL, null=True,)
 
+    @property
+    def like_count(self):
+        return self.likes.all().count()
+
     def __str__(self):
         return '지역:{} -설명:{}'.format(self.location, self.caption)
 
