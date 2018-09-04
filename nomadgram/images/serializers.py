@@ -15,14 +15,14 @@ class CommentUserSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
-    creator = CommentUserSerializer()
+    creator = CommentUserSerializer(read_only=True)
 
     class Meta:
         model = models.Comment
         fields = (
             'id',
             'message',
-            'creator'
+            'creator',
         )
 
 
