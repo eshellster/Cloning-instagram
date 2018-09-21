@@ -1,16 +1,10 @@
 from django.urls import path
 
 from nomadgram.users.views import (
-    user_list_view,
-    user_redirect_view,
-    user_update_view,
-    user_detail_view,
+    explore_users
 )
 
 app_name = "users"
 urlpatterns = [
-    path("", view=user_list_view, name="list"),
-    path("~redirect/", view=user_redirect_view, name="redirect"),
-    path("~update/", view=user_update_view, name="update"),
-    path("<str:username>/", view=user_detail_view, name="detail"),
+    path("explore/", view=explore_users, name="explore"),
 ]
