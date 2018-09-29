@@ -47,9 +47,8 @@ class LikeImage(APIView):
                 creator=user,
                 image=image_id
             )
-            preExisiting_like.delete()
 
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
 
         except models.Like.DoesNotExist:
 
@@ -61,6 +60,88 @@ class LikeImage(APIView):
             new_like.save()
 
             return Response(status=status.HTTP_201_CREATED)
+
+
+class CommentOnImage(APIView):
+
+    def post(self, request, image_id, format=None):
+        user = request.user
+        try:
+            found_image = models.Image.objects.get(id=image_id)
+
+        except models.Image.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+
+            serializer.save(creator=user, image=found_image)
+
+            return Response(serializer.data, status.HTTP_201_CREATED)
+
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status.HTTP_202_ACCEPTED)
+
+
+class LikeImage(APIView):
+
+    def post(self, request, image_id, format=None):
+
+        user = request.user
+
+        try:
+            found_image = models.Image.objects.get(id=image_id)
+
+        except models.Image.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            preExisiting_like = models.Like.objects.get(
+                creator=user,
+                image=image_id
+            )
+
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
+
+        except models.Like.DoesNotExist:
+
+            new_like = models.Like.objects.create(
+                creator=user,
+                image=found_image
+            )
+
+            new_like.save()
+
+            return Response(status=status.HTTP_201_CREATED)
+
+
+class UnLikeImage(APIView):
+
+    def delete(self, request, image_id, format=None):
+
+        user = request.user
+
+        try:
+            found_image = models.Image.objects.get(id=image_id)
+
+        except models.Image.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            preExisiting_like = models.Like.objects.get(
+                creator=user,
+                image=image_id
+            )
+            preExisiting_like.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except models.Like.DoesNotExist:
+
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
 
 
 class CommentOnImage(APIView):
