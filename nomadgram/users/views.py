@@ -37,6 +37,25 @@ class FollowUser(APIView):
 follow_user = FollowUser.as_view()
 
 
+class UnFollowUser(APIView):
+
+    def post(self, request, user_id, format=None):
+
+        user = request.user
+
+        try:
+            user_to_follow = models.User.objects.get(id=user_id)
+        except model.User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        user.following.remove(user_to_follow)
+
+        return Response(status=status.HTTP_200_OK)
+
+
+un_follow_user = UnFollowUser.as_view()
+
+
 class FollowView(APIView):
 
     # follow 하기
