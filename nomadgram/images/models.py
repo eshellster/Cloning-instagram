@@ -23,11 +23,15 @@ class Image(TimeStampedModel):
     file = models.ImageField()
     location = models.CharField(max_length=140)
     caption = models.TextField()
-    creator = models.ForeignKey(user_models.User, models.SET_NULL, null=True,)
+    creator = models.ForeignKey(user_models.User, models.SET_NULL, null=True, related_name='images')
 
     @property
     def like_count(self):
         return self.likes.all().count()
+
+    @property
+    def comment_count(self):
+        return self.comments.all().count()
 
     def __str__(self):
         return '지역:{} -설명:{}'.format(self.location, self.caption)
