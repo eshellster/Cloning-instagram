@@ -10,7 +10,7 @@ class ExploreUsers(APIView):
 
         last_five = models.User.objects.all().order_by('-date_joined')[:5]
 
-        serializer = serializers.ExploreUserSerializer(last_five, many=True)
+        serializer = serializers.ListUserSerializer(last_five, many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -71,6 +71,25 @@ class UserProfile(APIView):
 
 
 user_profile = UserProfile.as_view()
+
+
+class UserFollowers(APIView):
+
+    def get(self, request, username, format=None):
+
+        try:
+            found_user = models.User.objects.get(username=username)
+        except models.User.DoseNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        user_followers = found_user.followers.all()
+
+        serializer = serializers.ListUserSerializer(user_followers, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+user_followers = UserFollowers.as_view()
 
 
 class FollowView(APIView):
