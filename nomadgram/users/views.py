@@ -92,6 +92,25 @@ class UserFollowers(APIView):
 user_followers = UserFollowers.as_view()
 
 
+class UserFollowing(APIView):
+
+    def get(self, request, username, format=None):
+
+        try:
+            found_user = models.User.objects.get(username=username)
+        except models.User.DoseNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        user_following = found_user.following.all()
+
+        serializer = serializers.ListUserSerializer(user_following, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+user_following = UserFollowing.as_view()
+
+
 class FollowView(APIView):
 
     # follow 하기
