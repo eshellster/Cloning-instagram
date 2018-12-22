@@ -5,6 +5,16 @@ from . import models, serializers
 # Create your views here.
 
 
+class ListAllImages(APIView):
+
+    def get(self, request, format=None):
+
+        all_images = models.Image.objects.all()
+
+        serializer = serializers.ImagesSerializer(all_images, many=True)
+
+        return Response(data=serializer.data)
+
 class Feed(APIView):
 
     def get(self, request, format=None):
@@ -192,15 +202,11 @@ class Search(APIView):
 
         print(hashtags)
 
+        images = models.Image.objects.filter(tags__name__in=hashtags).distinct()
+
+        print(images)
+
         return Response(status=status.HTTP_200_OK)
 
 
-class ListAllImages(APIView):
 
-    def get(self, request, format=None):
-
-        all_images = models.Image.objects.all()
-
-        serializer = serializers.ImagesSerializer(all_images, many=True)
-
-        return Response(data=serializer.data)
