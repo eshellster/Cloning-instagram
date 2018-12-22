@@ -34,4 +34,10 @@ urlpatterns = [
         view=views.Search.as_view(),
         name='search'
     ),
+    path(
+        "all/",
+        view=views.ListAllImages.as_view(),
+        name='all_images'
+    ),
+    
 ]

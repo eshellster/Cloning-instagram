@@ -17,7 +17,7 @@ class Feed(APIView):
 
         for following_user in following_users:
 
-            user_images = following_user.image_set.all()[:2]
+            user_images = following_user.images.all()[:2]
 
             for image in user_images:
 
@@ -188,6 +188,19 @@ class Search(APIView):
 
         hashtags = request.query_params.get('hashtags', None)
 
+        hashtags = hashtags.split(",")
+
         print(hashtags)
 
         return Response(status=status.HTTP_200_OK)
+
+
+class ListAllImages(APIView):
+
+    def get(self, request, format=None):
+
+        all_images = models.Image.objects.all()
+
+        serializer = serializers.ImagesSerializer(all_images, many=True)
+
+        return Response(data=serializer.data)
