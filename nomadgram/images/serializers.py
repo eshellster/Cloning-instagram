@@ -4,7 +4,7 @@ from . import models
 from nomadgram.users import models as user_models
 
 
-class UserProfileImageSerializer(serializers.ModelSerializer):
+class CountImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Image
@@ -72,3 +72,4 @@ class ImagesSerializer(serializers.ModelSerializer):
             "comments",
             "like_count"
         )
+

@@ -198,15 +198,19 @@ class Search(APIView):
 
         hashtags = request.query_params.get('hashtags', None)
 
-        hashtags = hashtags.split(",")
+        if hashtags is not None:
 
-        print(hashtags)
+            hashtags = hashtags.split(",")
 
-        images = models.Image.objects.filter(tags__name__in=hashtags).distinct()
+            images = models.Image.objects.filter(tags__name__in=hashtags).distinct()
 
-        print(images)
+            serializer = serializers.CountImageSerializer(images, many=True)
 
-        return Response(status=status.HTTP_200_OK)
+            return Response(data=serializer.data, status = status.HTTP_200_OK)
+
+        else:
+
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 

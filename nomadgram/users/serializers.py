@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from rest_framework import serializers
 from . import models
 from nomadgram.images import serializers as image_serizlizers
@@ -5,7 +6,7 @@ from nomadgram.images import serializers as image_serizlizers
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
-    images = image_serizlizers.UserProfileImageSerializer(many=True)
+    images = image_serizlizers.CountImageSerializer(many=True)
 
     class Meta:
         model = models.User
